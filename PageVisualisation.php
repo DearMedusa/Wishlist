@@ -1,5 +1,5 @@
 <?php
-	class Site{
+	class PageVisualisation{
     /**
      * methode publique statique headerHTML, acceptant un unique parametre correspondant * au titre de la page en cours de generation. Cette methode permet de generer tout * le code HTML allant de la declaration du Doctype a la balise ouvrante <body>.
      */
