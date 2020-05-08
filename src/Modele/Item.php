@@ -1,26 +1,23 @@
-
 <?php
 
-namespace tdnote\models;
+    namespace Wishlist\modele;
 
-require_once 'vendor/autoload.php';
+    require_once 'vendor/autoload.php';
 
-use \Illuminate\Database\Eloquent\Model;
+    use \Illuminate\Database\Eloquent\Model;
 
-class Client extends Model{
+    class Item extends Modele{
 
-    protected $table = 'client';
-    protected $primaryKey = 'id';
-    public $timestamps = false;
+        protected $table = 'items';
+        protected $primaryKey = 'id';
+        public $timestamps = false;
 
-    public function facture(){
-    	return $this->hasMany('\tdnote\models\Facture', 'client_id')->get();
+        public function Item(){
+            return $this->hasMany('\Wishlist\modele\Item', 'item_id')->get();
+        }
+
+        public static function recupId(int $id){
+            return Item::where('id', '=', $id)->first();
+        }
     }
-
-    public static function recupId(int $id){
-    	return Client::where('id', '=', $id)->first();
-    }
-}
-
-
 ?>
