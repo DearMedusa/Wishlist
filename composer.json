@@ -1,17 +1,16 @@
 {
-    "name": "Wishlist",
+    "name": "ProjetPHP",
     "type" : "project",
-    "description": "projet wishlist",
 
     "require":{
-	  "illuminate/database": "5.5.*",
-	  "php": ">=7.0",
-      "slim/slim" : "2.*"
+	"illuminate/database": "5.5.*",
+	"php": ">=7.0",
+    "slim/slim": "2.*" 
     },
 
     "autoload":{
 	"psr-4": {
-	    "Wishlist\\" : "src/"
+	    "ProjetPHP\\" : "src/"
 	}
     }
 }
