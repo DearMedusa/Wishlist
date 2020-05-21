@@ -1,34 +1,27 @@
 <?php
+namespace ProjetPhp\conf;
 
-use PDO;
+require_once './vendor/autoload.php';
 
-class ConnectionFactory 
-{
-	public static $db = null;
-	public static $config = [];
+use Illuminate\Database\Capsule\Manager as DB;
 
-	public static function setConfig($iniFile)
-	{
-		self::$config = parse_ini_file($iniFile);
-	}
+class ConnectionFactory{
 
-	public static function makeConnection() 
-	{
-		if (self::$db == null) {
-			$dsn = self::$config['driver'].
-				':host='.self::$config['host'].
-				';dbname='.self::$config['database'];
+    private static $conf = null;
 
-			self::$db = new PDO($dsn, self::$config['username'], self::$config['password'], [
-				PDO::ATTR_PERSISTENT => true,
-				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-				PDO::ATTR_EMULATE_PREPARES => false,
-				PDO::ATTR_STRINGIFY_FETCHES => false,
-			]);
-
-			self::$db->prepare('SET NAMES \'UTF8\'')->execute();
-		}
-
-		return self::$db;
-	}
+    public static function setConfig($configfile){
+        self::$conf = parse_ini_file($configfile);
+        if (is_null(self::$conf))
+	    throw new DBException("Erreur");
+    }
+    
+    public static function makeConnection(){        /** A voir si déplacement dans l'index ???*/
+        $db = new DB();
+        $db->addConnection(self::$conf);
+        $db->setAsGlobal();
+        $db->bootEloquent();
+  }
 }
+
+
+?>
