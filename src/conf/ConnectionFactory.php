@@ -1,5 +1,5 @@
 <?php
-namespace ProjetPhp\conf;
+namespace ProjetPHP\conf;
 
 require_once './vendor/autoload.php';
 
