@@ -1,11 +1,11 @@
 <?php
 
-require 'vendor/autoload.php';
-use tdnote\models\Client;
-use tdnote\models\Facture;
-use tdnote\outils\Outils;
-use tdnote\conf\ConnectionFactory;
-
+require_once 'vendor/autoload.php';
+use \ProjetPHP\models\User;
+use \ProjetPHP\models\Item;
+use \ProjetPHP\outils\Outils;
+use \ProjetPHP\models\Liste;
+use \ProjetPHP\conf\ConnectionFactory;
 
 
 ConnectionFactory::setConfig('conf.ini');
@@ -13,27 +13,27 @@ ConnectionFactory::makeConnection();
 
 $app = new \Slim\Slim();
 $app->get('/', function(){
-    affichageForm();
-})->name('form');
-$app->get('/client', function(){
+    affichageUser();
+})->name('liste');
+$app->get('/user', function(){
     $slim = \Slim\Slim::getInstance();
-    $id = $slim->request->get()['client'];
-    affichageClient($id);
+    $id = $slim->request->get()['user'];
+    affichageListe($id);
 })->name('repForm');
 
 
 
-function affichageForm(){
+function affichageUser(){
   global $app;
   $action = $app->urlFor('repForm');
   Outils::headerHTML('Choix du client');
   echo    "<form method='GET' action='$action'>
-          <select name='client'>
-          <option value=''>Choisir un client</option>";
-  $Liste = Client::select('nomcli', 'id')->get();
+          <select name='user'>
+          <option value=''>Choisir un utilisateur</option>";
+  $Liste = User::select('login', 'id')->get(); // il s'agit de la classe 
   foreach ($Liste as $rangee){
     $clientId=$rangee["id"];
-    $nomClient=$rangee["nomcli"];
+    $nomClient=$rangee["login"];
     echo "<option value='".$clientId."'>".$nomClient."</option> \n";
  }
   echo '</form>';
@@ -41,12 +41,21 @@ function affichageForm(){
   echo "</select>\n";
 }
 
-function affichageClient($id){
-    $Facture = Facture::select('datefact', 'montant')->where('client_id','=',$id)->get();
+function affichageListe($id){
+    $Facture = Liste::select('titre', 'description')->where('user_id','=',$id)->get();
+    $Item = Item::select('nom', 'descr')->where('liste_id','=',$id)->get();  //classe User
     foreach ($Facture as $rangee){
-      $date=$rangee["datefact"];
-      $prix=$rangee["montant"];
-      echo $date ."\n" . $prix . " euros" ."<br>";
+      $titre=$rangee["titre"];
+      $description=$rangee["description"];
+      echo('Titre : '.$titre."</br>");
+      echo('description de l\'évènement : '.$description."</br>");
+
+      foreach($Item as $rangee){
+        $nom=$rangee["nom"];
+        $descr=$rangee["descr"];
+        echo('Nom de l\'item : '.$nom."</br>");
+        echo('description de l\'item : '.$descr."</br>");
+      }
      }
    }
 
