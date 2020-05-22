@@ -7,7 +7,6 @@ et s'engager à offrir 1 élément de la liste. Cet élément est alors marqué 
 liste.
 
 Tony Martin
-Louise Maire
 Louis de Granrut
 
 AS info 2020
